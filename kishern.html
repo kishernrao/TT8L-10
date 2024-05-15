@@ -13,3 +13,26 @@
 </head>
 <body>
     <h1>Quiz</h1>
+        <!-- Multiple Choice Question 1 -->
+        <div class="question">
+            <p>1. How many Newton's Laws are there?</p>
+            <div class="mcq-options">
+                <input type="radio" id="q1a" name="q1" value="a">
+                <label for="q1a">1</label><br>
+                <input type="radio" id="q1b" name="q1" value="b">
+                <label for="q1b">2</label><br>
+                <input type="radio" id="q1c" name="q1" value="c">
+                <label for="q1c">3</label><br>
+                <input type="radio" id="q1d" name="q1" value="d">
+                <label for="q1d">3</label>
+            </div>
+        </div>
+
+        <button onclick="submitQuiz()">Submit</button>
+        <script>
+            function submitQuiz() {
+                alert("Quiz submitted!");
+            }
+        </script>
+    </body>
+    </html>
