@@ -1,0 +1,12 @@
+1. How many Newton's Laws are there?
+- 1
+- 2
+- 3
+- 4
+2. What are some examples of SI Units?
+- Metre
+- Yard
+- Mile
+- Foot
+3. What is the speed of light in a vacuum (in meters per second)?
+- 299792458
