@@ -1,109 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Quiz</title>
-    <style>
-        body {
-            background-color: #7acaf5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .quiz-container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
-        }
-        .question {
-            display: none;
-        }
-        .question.active {
-            display: block;
-        }
-        .mcq-options {
-            margin-left: 20px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin-top: 20px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCQ Quiz</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="quiz-container">
-        <h1>Quiz</h1>
-
-        <div class="question active" id="question1">
-            <p>1. How many Newton's Laws are there?</p>
-            <div class="mcq-options">
-                <input type="radio" name="q1" id="q1a">
-                <label for="q1a">1</label><br>
-                <input type="radio" name="q1" id="q1b">
-                <label for="q1b">2</label><br>
-                <input type="radio" name="q1" id="q1c">
-                <label for="q1c">3</label><br>
-                <input type="radio" name="q1" id="q1d">
-                <label for="q1d">4</label>
-            </div>
-            <button onclick="nextQuestion('question2')">Next</button>
-        </div>
-
-        <div class="question" id="question2">
-            <p>2. What are some examples of SI Units?</p>
-            <div class="mcq-options">
-                <input type="checkbox" name="q2" id="q2a">
-                <label for="q2a">Metre</label><br>
-                <input type="checkbox" name="q2" id="q2b">
-                <label for="q2b">Yard</label><br>
-                <input type="checkbox" name="q2" id="q2c">
-                <label for="q2c">Mile</label><br>
-                <input type="checkbox" name="q2" id="q2d">
-                <label for="q2d">Foot</label>
-            </div>
-            <button onclick="nextQuestion('question3')">Next</button>
-        </div>
-
-        <div class="question" id="question3">
-            <p>3. What is the speed of light in a vacuum (in meters per second)?</p>
-            <input type="text" id="q3" name="q3">
-            <button onclick="submitAnswer()">Enter</button>
-        </div>
-
-        <button onclick="submitQuiz()">Submit Quiz</button>
-    </div>
-
-    <script>
-        function nextQuestion(nextQuestionId) {
-            const currentQuestion = document.querySelector('.question.active');
-            currentQuestion.classList.remove('active');
-            const nextQuestion = document.getElementById(nextQuestionId);
-            nextQuestion.classList.add('active');
-        }
-
-        function submitAnswer() {
-            var answer = document.getElementById('q3').value;
-            alert("Your answer: " + answer);
-        }
-
-        function submitQuiz() {
-            alert("Quiz submitted!");
-        }
-    </script>
+  <h1>MCQ Quiz</h1>
+  <div id="quiz-container"></div>
+  <button id="submit-btn">Submit Quiz</button>
+  <script src="script.js"></script>
 </body>
 </html>
+
+
+
 
 
 

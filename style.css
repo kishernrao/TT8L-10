@@ -1,0 +1,24 @@
+body {
+    font-family: sans-serif;
+    margin: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  
+  #quiz-container {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .question {
+    margin-bottom: 15px;
+  }
+  
+  .option {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
