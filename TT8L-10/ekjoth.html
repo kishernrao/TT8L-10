@@ -28,30 +28,8 @@
             </div>
         </div>
         <div class="quiz-footer">
-            <button onclick="submitQuiz()">Submit</button>
+            <button>Submit</button>
         </div>
     </div>
-
-    <script>
-        function submitQuiz() {
-            let score = 0;
-            const answers = {
-                question1: 'true',
-                question2: 'false',
-                question3: 'false'
-            };
-            
-            for (let question in answers) {
-                const options = document.getElementsByName(question);
-                for (let option of options) {
-                    if (option.checked && option.value === answers[question]) {
-                        score++;
-                    }
-                }
-            }
-            
-            alert('You scored ' + score + ' out of ' + Object.keys(answers).length);
-        }
-    </script>
 </body>
 </html>
