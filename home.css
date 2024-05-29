@@ -8,7 +8,7 @@
   
   nav {
     height: 80px;
-    background: #fdcc04;
+    background: #5c8abc5c;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -34,7 +34,7 @@
   }
   
   .hero {
-    background: #fdcc04;
+    background: #5c8abc5c;
   }
   
   .hero-container {
