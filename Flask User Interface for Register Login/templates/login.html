@@ -8,11 +8,15 @@
   <form method="post" action="{{ url_for('login') }}">
     <div class="container">
       <h1 style="text-align: center;">Login</h1>
-      <p>Please enter your login details.</p>
+
+      {% if message %}
+        <div class="alert alert-info">{{ message }}</div>
+      {% endif %}
+      
       <hr>
 
-      <label for="username"><b>Username or Email Address</b></label>
-      <input type="text" placeholder="Enter Username or Email Address" name="username" id="username" required>
+      <label for="username_email"><b>Username or Email Address</b></label>
+      <input type="text" placeholder="Enter Username or Email Address" name="username_email" id="username_email" value="{{ request.form.username }}" required>
 
       <label for="psw"><b>Password</b></label>
       <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
@@ -23,7 +27,7 @@
       <div class="container login page">
         <p>Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
       </div>
+    </div>
   </form>
 </body>
 </html>
-
