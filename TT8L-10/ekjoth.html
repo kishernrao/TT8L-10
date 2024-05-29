@@ -3,60 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>True/False Quiz</title>
+    <title>Simple True/False Quiz</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background-color: #ffffff;
+            margin: 20px;
         }
         .quiz-container {
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 20px;
+            background-color: #f2f2f2;
+            border: 1px solid #cccccc;
+            padding: 10px;
             width: 300px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
         }
         .quiz-header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         .quiz-header h2 {
             margin: 0;
-            font-size: 24px;
-            color: #333;
+            font-size: 18px;
+            color: #000000;
         }
         .quiz-body {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         .quiz-question {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         .quiz-question p {
-            margin: 0 0 10px;
-            font-size: 16px;
-            color: #333;
+            margin: 0;
+            font-size: 14px;
+            color: #000000;
         }
         .quiz-footer {
             text-align: center;
         }
         .quiz-footer button {
-            background-color: #28a745;
-            color: #fff;
+            background-color: #007bff;
+            color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 5px 10px;
             cursor: pointer;
-            font-size: 16px;
-        }
-        .quiz-footer button:hover {
-            background-color: #218838;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -72,12 +62,12 @@
                 <input type="radio" name="question1" value="false"> False
             </div>
             <div class="quiz-question">
-                <p>2. SI unit for mass is grams.</p>
+                <p>2. The SI unit for mass is grams.</p>
                 <input type="radio" name="question2" value="true"> True<br>
                 <input type="radio" name="question2" value="false"> False
             </div>
             <div class="quiz-question">
-                <p>3. Vector Quantities have magnitude only.</p>
+                <p>3. Vector quantities have magnitude only.</p>
                 <input type="radio" name="question3" value="true"> True<br>
                 <input type="radio" name="question3" value="false"> False
             </div>
@@ -88,3 +78,4 @@
     </div>
 </body>
 </html>
+
