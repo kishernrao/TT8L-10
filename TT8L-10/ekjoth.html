@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>True/False Quiz</title>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h2>True/False Quiz</h2>
+        </div>
+        <div class="quiz-body">
+            <div class="quiz-question">
+                <p>1. The sky is blue.</p>
+                <input type="radio" name="question1" value="true"> True<br>
+                <input type="radio" name="question1" value="false"> False
+            </div>
+            <div class="quiz-question">
+                <p>2. The Earth is flat.</p>
+                <input type="radio" name="question2" value="true"> True<br>
+                <input type="radio" name="question2" value="false"> False
+            </div>
+            <div class="quiz-question">
+                <p>3. Water boils at 100 degrees Celsius.</p>
+                <input type="radio" name="question3" value="true"> True<br>
+                <input type="radio" name="question3" value="false"> False
+            </div>
+        </div>
+        <div class="quiz-footer">
+            <button onclick="submitQuiz()">Submit</button>
+        </div>
+    </div>
+
+    <script>
+        function submitQuiz() {
+            let score = 0;
+            const answers = {
+                question1: 'true',
+                question2: 'false',
+                question3: 'true'
+            };
+            
+            for (let question in answers) {
+                const options = document.getElementsByName(question);
+                for (let option of options) {
+                    if (option.checked && option.value === answers[question]) {
+                        score++;
+                    }
+                }
+            }
+            
+            alert('You scored ' + score + ' out of ' + Object.keys(answers).length);
+        }
+    </script>
+</body>
+</html>
