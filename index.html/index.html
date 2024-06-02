@@ -21,10 +21,12 @@
             <div class="col-md-offset-15 col-md-13">
                 <h2 class="page-header text-primary text-center"><span class="fa fa-image"> KAB00M</span> </h2>
                 <div class="form-group">
-                    <input type="submit" value="Login" class="btn btn-primary btn-block">
+                     <form action="{{ url_for('login') }}" method="get">
+                          <input type="submit" value="Login" class="btn btn-primary btn-block">
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Register" class="btn btn-info btn-block">
+                     <form action="{{ url_for('register') }}" method="get">
+                          <input type="submit" value="Register" class="btn btn-info btn-block">
                 </div>
     </body>
 </html>          
