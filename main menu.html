@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Main Menu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="student">
+    <button class="menu-button" onclick="toggleSidebar()">☰</button>
+    <div class="overlay" onclick="toggleSidebar()"></div>
+    <div class="sidebar">
+        <div class="menu-item" onclick="navigateTo('assignments')">Assignments</div>
+        <div class="menu-item" onclick="navigateTo('quizBank')">Quiz Bank</div>
+    </div>
+    <div class="menu-container">
+        <h1>Welcome, Student</h1>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>
+
+
