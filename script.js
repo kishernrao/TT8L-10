@@ -1,3 +1,4 @@
+const pageContainer = document.getElementById('page-container');
 const quizContainer = document.getElementById('quiz-container');
 const submitBtn = document.getElementById('submit-btn');
 let questions = [];
@@ -74,6 +75,8 @@ function showQuestion(index) {
 
 function checkAnswers() {
   let score = 0;
+  const correctAnswers = [];
+  const wrongAnswers = [];
 
   questions.forEach((question, index) => {
     const questionEl = document.querySelector(`.question[data-question-index="${index}"]`);
@@ -85,27 +88,48 @@ function checkAnswers() {
 
       if (selectedAnswer === correctAnswer) {
         score++;
-        correctOption.style.color = 'green'; // Highlight correct answer in green
+        correctAnswers.push(questionEl.querySelector('h3').innerText);
       } else {
-        selectedOption.parentElement.style.color = 'red'; // Highlight incorrect answer in red
+        wrongAnswers.push({
+          question: questionEl.querySelector('h3').innerText,
+          selected: selectedAnswer,
+          correct: correctAnswer
+        });
       }
     }
   });
 
-  alert(`Your score is ${score}/${questions.length}`);
+  const totalQuestions = questions.length;
+  const percentage = ((score / totalQuestions) * 100).toFixed(2);
+
+  pageContainer.classList.add('fade-out');
+
+  setTimeout(() => {
+    window.location.href = `summary.html?score=${score}&total=${totalQuestions}&percentage=${percentage}&correct=${encodeURIComponent(JSON.stringify(correctAnswers))}&wrong=${encodeURIComponent(JSON.stringify(wrongAnswers))}`;
+  }, 500); 
 }
 
 function showNextQuestion() {
   if (currentQuestionIndex < questions.length - 1) {
-    currentQuestionIndex++;
-    showQuestion(currentQuestionIndex);
+    pageContainer.classList.add('fade-out');
+
+    setTimeout(() => {
+      currentQuestionIndex++;
+      showQuestion(currentQuestionIndex);
+      pageContainer.classList.remove('fade-out');
+    }, 500); 
   }
 }
 
 function showPrevQuestion() {
   if (currentQuestionIndex > 0) {
-    currentQuestionIndex--;
-    showQuestion(currentQuestionIndex);
+    pageContainer.classList.add('fade-out');
+
+    setTimeout(() => {
+      currentQuestionIndex--;
+      showQuestion(currentQuestionIndex);
+      pageContainer.classList.remove('fade-out');
+    }, 500); 
   }
 }
 
@@ -128,6 +152,10 @@ prevBtn.style.left = '20px';
 document.body.appendChild(prevBtn);
 
 fetchQuestions();
+
+
+
+
 
 
 

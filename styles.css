@@ -4,7 +4,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Center vertically */
+    justify-content: center; 
     height: 100vh;
     margin: 0;
 }
@@ -27,23 +27,23 @@ body {
 
 .question {
     margin-bottom: 20px;
-    width: 100%; /* Ensure the question div takes full width of the container */
+    width: 100%; 
 }
 
 .mcq-options {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Align options to the start for better readability */
-    width: 100%; /* Ensure the options div takes full width of the container */
+    align-items: flex-start; 
+    width: 100%; 
 }
 
 .option {
     margin-bottom: 10px;
-    width: 100%; /* Ensure each option takes full width of the container */
+    width: 100%; 
 }
 
 input[type="radio"] {
-    margin-right: 10px; /* Add some space between radio button and text */
+    margin-right: 10px; 
 }
 
 button {
@@ -64,7 +64,7 @@ button:hover {
 }
 
 #submit-btn {
-    display: none; /* Hide submit button initially */
+    display: none; 
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -94,7 +94,17 @@ button:hover {
     right: 20px;
 }
 
-
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .fade-in {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+    transition-delay: 0.5s;
+  }
+  
 
 
 
