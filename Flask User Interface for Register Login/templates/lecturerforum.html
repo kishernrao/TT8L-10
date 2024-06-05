@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lecturer Help Forum</title>
+</head>
+<body>
+    <h1>Welcome to Lecturer Help Forum</h1>
+
+    {% for question in questions %}
+        <div>
+            <h2>{{ question.question }}</h2>
+            <p>{{ question.description }}</p>
+            <form method="POST" action="{{ url_for('lecturerforum') }}">
+                {{ form.hidden_tag() }}
+                {{ form.email.label }} {{ form.email }}
+                {{ form.comment.label }} {{ form.comment }}
+                <input type="hidden" name="question_id" value="{{ question.id }}">
+                {{ form.submit }}
+            </form>
+            <h3>Comments:</h3>
+            <ul>
+                {% for comment in question.comments %}
+                    <li>{{ comment.comment }} - {{ comment.email }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+</body>
+</html>
+
