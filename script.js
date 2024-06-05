@@ -1,85 +1,139 @@
 const quizContainer = document.getElementById('quiz-container');
 const submitBtn = document.getElementById('submit-btn');
+let questions = [];
+let currentQuestionIndex = 0;
 
 function fetchQuestions() {
   fetch('questions.txt')
     .then(response => response.text())
     .then(data => {
-      const questions = data.split('\n');
-      buildQuiz(questions);
+      questions = data.split('\n');
+      buildQuiz();
+      showQuestion(currentQuestionIndex);
     });
 }
 
-function buildQuiz(questions) {
-  questions.forEach(question => {
-    const [qText, ...options] = question.split(',');
+function buildQuiz() {
+  questions.forEach((question, index) => {
+    const parts = question.split(',');
+    const qText = parts[0].trim();
+    const options = parts.slice(1).map(opt => opt.trim());
 
     const questionEl = document.createElement('div');
     questionEl.classList.add('question');
-    questionEl.innerHTML = `<h3>${qText.trim()}</h3>`;
+    questionEl.setAttribute('data-question-index', index);
+    questionEl.innerHTML = `<h3>${qText}</h3>`;
 
-    const isTextAnswer = options.length === 1; // Check if single text answer
+    const optionsEl = document.createElement('div');
+    optionsEl.classList.add('mcq-options');
 
-    if (isTextAnswer) {
-      const answerInput = document.createElement('input');
-      answerInput.type = 'text';
-      answerInput.id = `q${questions.indexOf(question) + 1}`; // Unique ID
-      questionEl.appendChild(answerInput);
-    } else {
-      const optionsEl = document.createElement('div');
-      optionsEl.classList.add('mcq-options');
-      options.forEach(option => {
-        const optionEl = document.createElement('label');
-        optionEl.classList.add('option');
-        const isCorrect = option.includes('*');
-        const optionText = option.trim().replace('*', '');
+    options.forEach((option) => {
+      const optionEl = document.createElement('label');
+      optionEl.classList.add('option');
 
-        optionEl.innerHTML = `
-          <input type="${isTextAnswer ? 'checkbox' : 'radio'}" name="q${questions.indexOf(question) + 1}" value="${optionText}" ${isCorrect ? 'checked' : ''}>
-          ${optionText}
-        `;
+      const isCorrect = option.endsWith('*');
+      const optionText = isCorrect ? option.slice(0, -1).trim() : option;
 
-        // Add class for correct or wrong answer based on asterisk
-        optionEl.classList.add(isCorrect ? 'correct' : 'wrong');
+      optionEl.innerHTML = `
+        <input type="radio" name="q${index}" value="${optionText}">
+        ${optionText}
+      `;
 
-        optionsEl.appendChild(optionEl);
-      });
-      questionEl.appendChild(optionsEl);
-    }
+      if (isCorrect) {
+        optionEl.dataset.correct = true;
+      }
 
+      optionsEl.appendChild(optionEl);
+    });
+
+    questionEl.appendChild(optionsEl);
     quizContainer.appendChild(questionEl);
   });
 }
 
-fetchQuestions();
-
-submitBtn.addEventListener('click', () => {
-  // Implement logic to handle user selections, calculate score,
-  // and potentially highlight correct/wrong answers visually
-
-  const userAnswers = {}; // Store user answers for each question
+function showQuestion(index) {
   const questions = document.querySelectorAll('.question');
-
-  questions.forEach(question => {
-    const questionId = question.querySelector('h3').textContent.trim().split(' ')[0].slice(1); // Extract question number
-    const userAnswerEl = question.querySelector('input[type="text"]') || question.querySelector('input[type="radio"]:checked'); // Get text input or checked radio button
-    userAnswers[questionId] = userAnswerEl ? userAnswerEl.value : ''; // Store user answer
-
-    // Optional: Visually highlight correct/wrong answers (example)    const options = question.querySelectorAll('.option');
-    options.forEach(option => {
-      if (option.classList.contains('correct') && option.textContent.trim() === userAnswers[questionId]) {
-        option.style.color = 'green'; // Visually indicate correct answer
-      } else if (option.classList.contains('wrong') && option.textContent.trim() === userAnswers[questionId]) {
-        option.style.color = 'red'; // Visually indicate incorrect answer
-      }
-    });
+  questions.forEach((question, idx) => {
+    question.style.display = idx === index ? 'block' : 'none';
   });
 
-  // Calculate score based on userAnswers and correct answers from questions.txt
-  // (implementation omitted for brevity)
+  if (index === questions.length - 1) {
+    submitBtn.style.display = 'block';
+    nextBtn.style.display = 'none';
+  } else {
+    submitBtn.style.display = 'none';
+    nextBtn.style.display = 'block';
+  }
 
-  console.log('User answers:', userAnswers);
-  // Display score or any other feedback to the user
-});
+  if (index === 0) {
+    prevBtn.style.display = 'none';
+  } else {
+    prevBtn.style.display = 'block';
+  }
+}
+
+function checkAnswers() {
+  let score = 0;
+
+  questions.forEach((question, index) => {
+    const questionEl = document.querySelector(`.question[data-question-index="${index}"]`);
+    const selectedOption = questionEl.querySelector('input[type="radio"]:checked');
+    if (selectedOption) {
+      const selectedAnswer = selectedOption.value.trim();
+      const correctOption = questionEl.querySelector('label[data-correct="true"]');
+      const correctAnswer = correctOption ? correctOption.querySelector('input').value.trim() : '';
+
+      if (selectedAnswer === correctAnswer) {
+        score++;
+        correctOption.style.color = 'green'; // Highlight correct answer in green
+      } else {
+        selectedOption.parentElement.style.color = 'red'; // Highlight incorrect answer in red
+      }
+    }
+  });
+
+  alert(`Your score is ${score}/${questions.length}`);
+}
+
+function showNextQuestion() {
+  if (currentQuestionIndex < questions.length - 1) {
+    currentQuestionIndex++;
+    showQuestion(currentQuestionIndex);
+  }
+}
+
+function showPrevQuestion() {
+  if (currentQuestionIndex > 0) {
+    currentQuestionIndex--;
+    showQuestion(currentQuestionIndex);
+  }
+}
+
+submitBtn.addEventListener('click', checkAnswers);
+
+const nextBtn = document.createElement('button');
+nextBtn.innerText = 'Next';
+nextBtn.addEventListener('click', showNextQuestion);
+nextBtn.style.position = 'fixed';
+nextBtn.style.bottom = '20px';
+nextBtn.style.right = '20px';
+document.body.appendChild(nextBtn);
+
+const prevBtn = document.createElement('button');
+prevBtn.innerText = 'Previous';
+prevBtn.addEventListener('click', showPrevQuestion);
+prevBtn.style.position = 'fixed';
+prevBtn.style.bottom = '20px';
+prevBtn.style.left = '20px';
+document.body.appendChild(prevBtn);
+
+fetchQuestions();
+
+
+
+
+
+
+
 
 

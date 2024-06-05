@@ -2,8 +2,9 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center; /* Center vertically */
     height: 100vh;
     margin: 0;
 }
@@ -14,6 +15,10 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .quiz-container h1 {
@@ -22,17 +27,23 @@ body {
 
 .question {
     margin-bottom: 20px;
+    width: 100%; /* Ensure the question div takes full width of the container */
 }
 
-.question p {
-    margin: 0;
+.mcq-options {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align options to the start for better readability */
+    width: 100%; /* Ensure the options div takes full width of the container */
 }
 
-input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    box-sizing: border-box;
+.option {
+    margin-bottom: 10px;
+    width: 100%; /* Ensure each option takes full width of the container */
+}
+
+input[type="radio"] {
+    margin-right: 10px; /* Add some space between radio button and text */
 }
 
 button {
@@ -43,9 +54,7 @@ button {
     text-align: center;
     text-decoration: none;
     display: block;
-    width: 100%;
     font-size: 16px;
-    margin-top: 20px;
     cursor: pointer;
     border-radius: 5px;
 }
@@ -53,3 +62,40 @@ button {
 button:hover {
     background-color: #45a049;
 }
+
+#submit-btn {
+    display: none; /* Hide submit button initially */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+#prev-btn, #next-btn {
+    position: fixed;
+    bottom: 20px;
+    font-size: 16px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+#prev-btn:hover, #next-btn:hover {
+    background-color: #45a049;
+}
+
+#prev-btn {
+    left: 20px;
+}
+
+#next-btn {
+    right: 20px;
+}
+
+
+
+
+
+
