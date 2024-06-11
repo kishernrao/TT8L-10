@@ -12,8 +12,14 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/add-question', (req, res) => {
-  const { question, options } = req.body;
-  const newQuestion = `${question}, ${options}\n`;
+  const { questionType, question, options, subjectiveAnswer } = req.body;
+  let newQuestion = '';
+
+  if (questionType === 'mcq') {
+    newQuestion = `${question}, ${options}\n`;
+  } else if (questionType === 'subjective') {
+    newQuestion = `SUBJECTIVE: ${question}, ${subjectiveAnswer}\n`;
+  }
 
   fs.appendFile(path.join(__dirname, 'public', 'questions.txt'), newQuestion, (err) => {
     if (err) {
@@ -28,5 +34,7 @@ app.post('/add-question', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+
 
 

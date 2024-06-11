@@ -8,7 +8,7 @@ function fetchQuestions() {
   fetch('questions.txt')
     .then(response => response.text())
     .then(data => {
-      questions = data.split('\n');
+      questions = data.trim().split('\n');
       buildQuiz();
       showQuestion(currentQuestionIndex);
     });
@@ -16,38 +16,46 @@ function fetchQuestions() {
 
 function buildQuiz() {
   questions.forEach((question, index) => {
-    const parts = question.split(',');
-    const qText = parts[0].trim();
-    const options = parts.slice(1).map(opt => opt.trim());
-
+    const isSubjective = question.startsWith('SUBJECTIVE:');
+    const questionParts = isSubjective ? question.replace('SUBJECTIVE: ', '').split(',') : question.split(',');
+    const qText = questionParts[0].trim();
+    
     const questionEl = document.createElement('div');
     questionEl.classList.add('question');
     questionEl.setAttribute('data-question-index', index);
     questionEl.innerHTML = `<h3>${qText}</h3>`;
+    
+    if (isSubjective) {
+      const answerEl = document.createElement('textarea');
+      answerEl.classList.add('subjective-answer');
+      questionEl.appendChild(answerEl);
+    } else {
+      const options = questionParts.slice(1).map(opt => opt.trim());
+      const optionsEl = document.createElement('div');
+      optionsEl.classList.add('mcq-options');
+      
+      options.forEach((option) => {
+        const optionEl = document.createElement('label');
+        optionEl.classList.add('option');
 
-    const optionsEl = document.createElement('div');
-    optionsEl.classList.add('mcq-options');
+        const isCorrect = option.endsWith('*');
+        const optionText = isCorrect ? option.slice(0, -1).trim() : option;
 
-    options.forEach((option) => {
-      const optionEl = document.createElement('label');
-      optionEl.classList.add('option');
+        optionEl.innerHTML = `
+          <input type="radio" name="q${index}" value="${optionText}">
+          ${optionText}
+        `;
 
-      const isCorrect = option.endsWith('*');
-      const optionText = isCorrect ? option.slice(0, -1).trim() : option;
+        if (isCorrect) {
+          optionEl.dataset.correct = true;
+        }
 
-      optionEl.innerHTML = `
-        <input type="radio" name="q${index}" value="${optionText}">
-        ${optionText}
-      `;
+        optionsEl.appendChild(optionEl);
+      });
+      
+      questionEl.appendChild(optionsEl);
+    }
 
-      if (isCorrect) {
-        optionEl.dataset.correct = true;
-      }
-
-      optionsEl.appendChild(optionEl);
-    });
-
-    questionEl.appendChild(optionsEl);
     quizContainer.appendChild(questionEl);
   });
 }
@@ -80,21 +88,38 @@ function checkAnswers() {
 
   questions.forEach((question, index) => {
     const questionEl = document.querySelector(`.question[data-question-index="${index}"]`);
-    const selectedOption = questionEl.querySelector('input[type="radio"]:checked');
-    if (selectedOption) {
-      const selectedAnswer = selectedOption.value.trim();
-      const correctOption = questionEl.querySelector('label[data-correct="true"]');
-      const correctAnswer = correctOption ? correctOption.querySelector('input').value.trim() : '';
-
-      if (selectedAnswer === correctAnswer) {
+    const isSubjective = question.startsWith('SUBJECTIVE:');
+    
+    if (isSubjective) {
+      const subjectiveAnswer = question.split(',')[1].trim();
+      const userAnswer = questionEl.querySelector('textarea').value.trim();
+      if (userAnswer.toLowerCase() === subjectiveAnswer.toLowerCase()) {
         score++;
         correctAnswers.push(questionEl.querySelector('h3').innerText);
       } else {
         wrongAnswers.push({
           question: questionEl.querySelector('h3').innerText,
-          selected: selectedAnswer,
-          correct: correctAnswer
+          selected: userAnswer,
+          correct: subjectiveAnswer
         });
+      }
+    } else {
+      const selectedOption = questionEl.querySelector('input[type="radio"]:checked');
+      if (selectedOption) {
+        const selectedAnswer = selectedOption.value.trim();
+        const correctOption = questionEl.querySelector('label[data-correct="true"]');
+        const correctAnswer = correctOption ? correctOption.querySelector('input').value.trim() : '';
+
+        if (selectedAnswer === correctAnswer) {
+          score++;
+          correctAnswers.push(questionEl.querySelector('h3').innerText);
+        } else {
+          wrongAnswers.push({
+            question: questionEl.querySelector('h3').innerText,
+            selected: selectedAnswer,
+            correct: correctAnswer
+          });
+        }
       }
     }
   });
@@ -152,6 +177,8 @@ prevBtn.style.left = '20px';
 document.body.appendChild(prevBtn);
 
 fetchQuestions();
+
+
 
 
 
