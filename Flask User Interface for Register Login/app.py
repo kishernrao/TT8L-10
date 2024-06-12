@@ -108,6 +108,10 @@ def lecturer():
 def student():
     return render_template('student.html')
 
+@app.route('/page', methods=['GET', 'POST'])
+def page():
+    return render_template('page.html')
+
 
 @app.route('/lecturerforum', methods=['GET', 'POST'])
 @login_required
