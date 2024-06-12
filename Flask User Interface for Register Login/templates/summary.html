@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCQ Quiz Summary</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>MCQ Quiz Summary</h1>
+  <div id="summary-container">
+    <p id="result"></p>
+    <div id="correct-questions">
+      <h2>Correct Questions</h2>
+      <ul id="correct-list"></ul>
+    </div>
+    <div id="wrong-questions">
+      <h2>Wrong Questions</h2>
+      <ul id="wrong-list"></ul>
+    </div>
+  </div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const score = params.get('score');
+    const total = params.get('total');
+    const percentage = params.get('percentage');
+    const correct = JSON.parse(decodeURIComponent(params.get('correct')));
+    const wrong = JSON.parse(decodeURIComponent(params.get('wrong')));
+
+    const resultContainer = document.getElementById('result');
+    resultContainer.textContent = `Your score is ${score}/${total} (${percentage}%).`;
+
+    const correctList = document.getElementById('correct-list');
+    correct.forEach((question) => {
+      const li = document.createElement('li');
+      li.textContent = question;
+      correctList.appendChild(li);
+    });
+
+    const wrongList = document.getElementById('wrong-list');
+    wrong.forEach((item) => {
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>${item.question}</strong><br>Selected: ${item.selected}<br>Correct: ${item.correct}`;
+      wrongList.appendChild(li);
+    });
+  </script>
+</body>
+</html>

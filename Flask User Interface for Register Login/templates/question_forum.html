@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Question Forum</title>
+</head>
+<body>
+    <h1>Question Forum</h1>
+    <ul>
+        {% for question in questions %}
+            <li>
+                <strong>{{ question.email }}</strong> asked: {{ question.question }}
+                <p>{{ question.description }}</p>
+                <a href="{{ url_for('help_forum', question_id=question.id) }}">View Comments</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
