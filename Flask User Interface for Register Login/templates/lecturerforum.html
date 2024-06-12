@@ -1,30 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Lecturer Help Forum</title>
+    <meta charset="UTF-8">
+    <title>Lecturer Forum</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='lecturer.css') }}">
 </head>
 <body>
-    <h1>Welcome to Lecturer Help Forum</h1>
+    <nav>
+        <div class="nav-items">
+            <a href='/lecturer'>Lecturer Page</a>
+            <a href="/">Logout</a>
+      </nav>
+
+    <h1>Welcome to Lecturer Forum Page</h1>
+    <h2>Help Students</h2>
 
     {% for question in questions %}
-        <div>
-            <h2>{{ question.question }}</h2>
+        <div class="question-container">
+            <strong>{{ question.email }}</strong> asked: 
+            <h3>{{ question.question }}</h3>
             <p>{{ question.description }}</p>
+            
             <form method="POST" action="{{ url_for('lecturerforum') }}">
                 {{ form.hidden_tag() }}
-                {{ form.email.label }} {{ form.email }}
-                {{ form.comment.label }} {{ form.comment }}
+                <div>
+                    {{ form.comment.label }} 
+                    {{ form.comment(class_="input") }}
+                </div>
                 <input type="hidden" name="question_id" value="{{ question.id }}">
-                {{ form.submit }}
+                <div>
+                    {{ form.submit(class_="submitbtn") }}
+                </div>
             </form>
-            <h3>Comments:</h3>
+            
+            <h4>Comments:</h4>
             <ul>
                 {% for comment in question.comments %}
-                    <li>{{ comment.comment }} - {{ comment.email }}</li>
+                    <li>{{ comment.email }} commented: {{ comment.comment }}</li>
                 {% endfor %}
             </ul>
         </div>
     {% endfor %}
 </body>
 </html>
-

@@ -2,11 +2,9 @@ from flask import Flask, render_template, url_for, redirect, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SubmitField
-from wtforms.validators import DataRequired, Email
-from flask_login import UserMixin, login_user, LoginManager
+from wtforms.validators import DataRequired
+from flask_login import UserMixin, login_user, LoginManager, current_user, login_required
 from flask_bcrypt import Bcrypt
-from datetime import datetime, timezone
-
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -22,6 +20,7 @@ login_manager.login_view = 'login'
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
 db = SQLAlchemy(app) # Creates all tables from db.Model
 
 class User(db.Model, UserMixin):
@@ -33,34 +32,34 @@ class User(db.Model, UserMixin):
 
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(150), nullable=False)
     question = db.Column(db.String(500), nullable=False)
+    email = db.Column(db.String(90), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    date_posted = db.Column(db.DateTime, default=datetime.now(timezone.utc))
-
+  
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(150), nullable=False)
     question = db.relationship('Question', backref=db.backref('comments', lazy=True))
+    email = db.Column(db.String(90), nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
     comment = db.Column(db.Text, nullable=False)
-    date_posted = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     
 
 class QuestionForm(FlaskForm): #Used FlaskForm to create the text box for Question
-    email = StringField('Email', validators=[DataRequired(), Email()])
     question = StringField('Question', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 class CommentForm(FlaskForm): #Used FlaskForm to create the text box for Comment
-    email = StringField('Email', validators=[DataRequired(), Email()])
     comment = TextAreaField('Comment', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 
 with app.app_context():
     db.create_all()
+
+@app.route('/')
+def home():
+    return render_template('home.html')
 
 @app.route('/register', methods=['GET', 'POST']) #leading to register page after click localhost5000/register
 def register():
@@ -101,19 +100,29 @@ def register():
 
     return render_template('register.html', message=message)
 
+@app.route('/lecturer', methods=['GET', 'POST']) #define lecturer.html
+def lecturer():
+    return render_template('lecturer.html')
+
+@app.route('/student', methods=['GET', 'POST'])
+def student():
+    return render_template('student.html')
+
+
 @app.route('/lecturerforum', methods=['GET', 'POST'])
+@login_required
 def lecturerforum():
     form = CommentForm()
     questions = Question.query.all()
     if form.validate_on_submit():
         question_id = request.form.get('question_id')
         if question_id:
-            comment = Comment(email=form.email.data, comment=form.comment.data, question_id=question_id)
+            comment = Comment(email=current_user.email, comment=form.comment.data, question_id=question_id)
             db.session.add(comment)
             db.session.commit()
-            flash('Your comment has been posted!', 'success')
+            flash('Your comment already posted!', 'success')
         else:
-            flash('Failed to post comment. Question ID missing.', 'danger')
+            flash('Failed to post comment, question id missing', 'try again')
         return redirect(url_for('lecturerforum'))
     return render_template('lecturerforum.html', form=form, questions=questions)
 
@@ -121,28 +130,25 @@ def lecturerforum():
 def studentforum():
     form = QuestionForm()
     if form.validate_on_submit():
-        question = Question(email=form.email.data, question=form.question.data, description=form.description.data)
+        question = Question(email=current_user.email, question=form.question.data, description=form.description.data)
         db.session.add(question)
         db.session.commit()
-        flash('Your question has been posted!', 'success')
+        flash('Your question already posted!', 'success')
         return redirect(url_for('studentforum'))
     questions = Question.query.all()
     return render_template('studentforum.html', form=form, questions=questions)
 
-@app.route('/question_forum')
-def question_forum():
-    questions = Question.query.all()
-    return render_template('question_forum.html', questions=questions)
+
 
 @app.route('/help_forum/<int:question_id>', methods=['GET', 'POST'])
 def help_forum(question_id):
     question = Question.query.get_or_404(question_id)
     form = CommentForm()
     if form.validate_on_submit():
-        comment = Comment(email=form.email.data, comment=form.comment.data, question_id=question.id)
+        comment = Comment(email=current_user.email, comment=form.comment.data, question_id=question.id)
         db.session.add(comment)
         db.session.commit()
-        flash('Your comment has been posted!', 'success')
+        flash('Your comment already posted!', 'success')
         return redirect(url_for('help_forum', question_id=question.id))
     comments = Comment.query.filter_by(question_id=question.id).all()
     return render_template('help_forum.html', question=question, comments=comments, form=form)
@@ -160,9 +166,9 @@ def login():
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user)
             if user.is_lecturer==True:
-                return redirect(url_for('lecturerforum')) #redirect to lecturerforum
+                return redirect(url_for('lecturer')) #redirect to lecturer
             else :
-                return redirect(url_for('studentforum')) #redirect to studentforum
+                return redirect(url_for('student')) #redirect to student
         else:
             message = 'Invalid username/email or password!'
             return render_template('login.html', message=message)
