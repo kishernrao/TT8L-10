@@ -177,18 +177,3 @@ prevBtn.style.left = '20px';
 document.body.appendChild(prevBtn);
 
 fetchQuestions();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
