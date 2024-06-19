@@ -11,8 +11,6 @@
       <div class="logo">KAB00M!</div>
       <div class="nav-items">
         <a href="/">Logout</a>
-        <a href='/login'>Login</a>
-        <a href='/register'>Register</a>
         <a href='/lecturerforum'>LecturerForum</a>
       </div>
     </nav>
@@ -23,7 +21,12 @@
           <p>
              As an lecturer you can create quizzes for your students now with KAB00M!
           </p>
-          <button>CREATE QUIZ</button>
+          <a href="{{ url_for('admin') }}"> <button>CREATE Physics QUIZ</button></a>
+          <a href="{{ url_for('CTadd') }}"> <button>CREATE CT QUIZ</button></a>
+          <a href="{{ url_for('Englishadd') }}"> <button>CREATE English QUIZ</button></a>
+
+
+          
         </div>
         <div class="column-right">
           <img src="{{ url_for('static', filename='bomb.svg') }}" alt="illustration" class="hero-image" />

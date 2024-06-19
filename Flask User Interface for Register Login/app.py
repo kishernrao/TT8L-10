@@ -1,10 +1,12 @@
-from flask import Flask, render_template, url_for, redirect, request, flash
+from flask import Flask, render_template, url_for, redirect, request, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SubmitField
 from wtforms.validators import DataRequired
 from flask_login import UserMixin, login_user, LoginManager, current_user, login_required
 from flask_bcrypt import Bcrypt
+import os
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -61,6 +63,7 @@ with app.app_context():
 def home():
     return render_template('home.html')
 
+
 @app.route('/register', methods=['GET', 'POST']) #leading to register page after click localhost5000/register
 def register():
     message = "Please enter your details to create an account."
@@ -112,6 +115,34 @@ def student():
 def page():
     return render_template('page.html')
 
+@app.route('/quiz', methods=['GET', 'POST'])
+def quiz():
+    return render_template('quiz.html')
+
+@app.route('/CTquiz', methods=['GET', 'POST'])
+def CTquiz():
+    return render_template('CTquiz.html')
+
+@app.route('/Englishquiz', methods=['GET', 'POST'])
+def Englishquiz():
+    return render_template('Englishquiz.html')
+
+@app.route('/Englishadd', methods=['GET', 'POST'])
+def Englishadd():
+    return render_template('Englishadd.html')
+
+
+@app.route('/CTadd', methods=['GET', 'POST'])
+def CTadd():
+    return render_template('CTadd.html')
+
+@app.route('/summary', methods=['GET', 'POST'])
+def summary():
+    return render_template('summary.html')
+
+@app.route('/admin', methods=['GET', 'POST'])
+def admin():
+    return render_template('admin.html')
 
 @app.route('/lecturerforum', methods=['GET', 'POST'])
 @login_required
@@ -141,6 +172,98 @@ def studentforum():
         return redirect(url_for('studentforum'))
     questions = Question.query.all()
     return render_template('studentforum.html', form=form, questions=questions)
+
+@app.route('/add-question', methods=['POST'])
+def add_question():
+    try:
+        data = request.get_json()
+
+        # Extract data from JSON payload
+        question_type = data.get('questionType')
+        question_text = data.get('question')
+        options = data.get('options', '').split(',') if 'options' in data else []
+        subjective_answer = data.get('subjectiveAnswer')
+
+        # Validate data (adjust validation as needed)
+        if not question_type or not question_text:
+            return jsonify({'error': 'Invalid data. Missing required fields.'}), 400
+
+        # Prepare question text based on type
+        if question_type == 'mcq':
+            question_text = f"{question_text}, " + ", ".join(options)
+        elif question_type == 'subjective':
+            question_text = f"SUBJECTIVE: {question_text}, {subjective_answer}"
+
+        # Append to questions.txt
+        with open('static/questions.txt', 'a') as file:
+            file.write(question_text + '\n')
+
+        return jsonify({'message': 'Question added successfully.'}), 201
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+@app.route('/add-ct-question', methods=['POST'])
+def add_ct_question():
+    try:
+        data = request.get_json()
+
+        # Extract data from JSON payload
+        question_type = data.get('questionType')
+        question_text = data.get('question')
+        options = data.get('options', '').split(',') if 'options' in data else []
+        subjective_answer = data.get('subjectiveAnswer')
+
+        # Validate data (adjust validation as needed)
+        if not question_type or not question_text:
+            return jsonify({'error': 'Invalid data. Missing required fields.'}), 400
+
+        # Prepare question text based on type
+        if question_type == 'mcq':
+            question_text = f"{question_text}, " + ", ".join(options)
+        elif question_type == 'subjective':
+            question_text = f"SUBJECTIVE: {question_text}, {subjective_answer}"
+
+        # Append to CT questions.txt
+        ct_questions_path = os.path.join(app.static_folder, 'CT questions.txt')
+        with open(ct_questions_path, 'a') as file:
+            file.write(question_text + '\n')
+
+        return jsonify({'message': 'CT Question added successfully.'}), 201
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/add-english-question', methods=['POST'])
+def add_english_question():
+    try:
+        data = request.get_json()
+
+        # Extract data from JSON payload
+        question_type = data.get('questionType')
+        question_text = data.get('question')
+        options = data.get('options', '').split(',') if 'options' in data else []
+        subjective_answer = data.get('subjectiveAnswer')
+
+        # Validate data (adjust validation as needed)
+        if not question_type or not question_text:
+            return jsonify({'error': 'Invalid data. Missing required fields.'}), 400
+
+        # Prepare question text based on type
+        if question_type == 'mcq':
+            question_text = f"{question_text}, " + ", ".join(options)
+        elif question_type == 'subjective':
+            question_text = f"SUBJECTIVE: {question_text}, {subjective_answer}"
+
+        # Append to English questions.txt
+        english_questions_path = os.path.join(app.static_folder, 'English questions.txt')
+        with open(english_questions_path, 'a') as file:
+            file.write(question_text + '\n')
+
+        return jsonify({'message': 'English Question added successfully.'}), 201
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 
@@ -180,4 +303,4 @@ def login():
     return render_template('login.html', message=message)
 
 if __name__ == '__main__': #running the localhost5000 for Register and Login
-    app.run(debug=True)
+    app.run(debug=True, port=5000)

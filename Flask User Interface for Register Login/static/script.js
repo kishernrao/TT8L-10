@@ -1,18 +1,19 @@
-const pageContainer = document.getElementById('page-container');
 const quizContainer = document.getElementById('quiz-container');
+const pageContainer = document.getElementById('page-container');
 const submitBtn = document.getElementById('submit-btn');
 let questions = [];
 let currentQuestionIndex = 0;
 
-function fetchQuestions() {
-  fetch('questions.txt')
-    .then(response => response.text())
-    .then(data => {
-      questions = data.trim().split('\n');
-      buildQuiz();
-      showQuestion(currentQuestionIndex);
-    });
-}
+fetch('/static/questions.txt')
+  .then(response => response.text())
+  .then(data => {
+    questions = data.trim().split('\n');
+    buildQuiz();
+    showQuestion(currentQuestionIndex);
+  })
+  .catch(error => {
+    console.error('Error fetching questions:', error);
+  });
 
 function buildQuiz() {
   questions.forEach((question, index) => {
@@ -130,31 +131,30 @@ function checkAnswers() {
   pageContainer.classList.add('fade-out');
 
   setTimeout(() => {
-    window.location.href = `summary.html?score=${score}&total=${totalQuestions}&percentage=${percentage}&correct=${encodeURIComponent(JSON.stringify(correctAnswers))}&wrong=${encodeURIComponent(JSON.stringify(wrongAnswers))}`;
+    const url = new URL(window.location.origin + '/summary');
+    url.searchParams.set('score', score);
+    url.searchParams.set('total', totalQuestions);
+    url.searchParams.set('percentage', percentage);
+    url.searchParams.set('correct', encodeURIComponent(JSON.stringify(correctAnswers)));
+    url.searchParams.set('wrong', encodeURIComponent(JSON.stringify(wrongAnswers)));
+    
+    console.log(url.toString()); // Debugging: Print the constructed URL
+    window.location.href = url.toString();  
   }, 500); 
 }
 
+
 function showNextQuestion() {
   if (currentQuestionIndex < questions.length - 1) {
-    pageContainer.classList.add('fade-out');
-
-    setTimeout(() => {
-      currentQuestionIndex++;
-      showQuestion(currentQuestionIndex);
-      pageContainer.classList.remove('fade-out');
-    }, 500); 
+    currentQuestionIndex++;
+    showQuestion(currentQuestionIndex);
   }
 }
 
 function showPrevQuestion() {
   if (currentQuestionIndex > 0) {
-    pageContainer.classList.add('fade-out');
-
-    setTimeout(() => {
-      currentQuestionIndex--;
-      showQuestion(currentQuestionIndex);
-      pageContainer.classList.remove('fade-out');
-    }, 500); 
+    currentQuestionIndex--;
+    showQuestion(currentQuestionIndex);
   }
 }
 
@@ -175,19 +175,3 @@ prevBtn.style.position = 'fixed';
 prevBtn.style.bottom = '20px';
 prevBtn.style.left = '20px';
 document.body.appendChild(prevBtn);
-
-fetchQuestions();
-
-
-
-
-
-
-
-
-
-
-
-
-
-

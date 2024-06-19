@@ -12,6 +12,7 @@
       <div class="nav-items">
         <a href="/">Home</a>
         <a href='/studentforum'>StudentForum</a>
+       
       </div>
     </nav>
     <section class="hero">
@@ -24,12 +25,14 @@
         </div>
         <div class="column-right">
           <div class="button-container">
-            <button>Principals of physics</button>
-            <button>Maths</button>
-            <button>Critical Thinking</button>
-            <button>Digital Systems</button>
-            <button>Academic English</button>
-            <button>Mini IT</button>
+            <a href="{{ url_for('quiz') }}"> <button>Principle of physics</button></a>
+            <a href="{{ url_for('CTquiz')}}"> <button>Critical Thinking</button></a>
+            <a href="{{ url_for('Englishquiz')}}"> <button>English</button></a>
+           
+            
+            
+            
+            
           </div>
     </section>
   </body>
