@@ -10,7 +10,7 @@ import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///database.db')
-app.config['SECRET_KEY'] = os.getenv('RegisterLogin')
+app.config['SECRET_KEY'] = os.getenv('RegisterLogin', 'default_secret_key')
 bcrypt = Bcrypt(app)
 
 login_manager = LoginManager()
