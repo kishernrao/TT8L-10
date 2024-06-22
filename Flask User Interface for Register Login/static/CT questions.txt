@@ -6,3 +6,4 @@ Bello, Hi
 SUBJECTIVE: How is your day?, Good
 i am quite hungry, nio, yes*, no
 how tall am i, 190, 180*, 140
+SUBJECTIVE: Hi, I am good

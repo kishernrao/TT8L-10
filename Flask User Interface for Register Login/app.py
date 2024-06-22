@@ -9,7 +9,7 @@ import os
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/database.db'
 app.config['SECRET_KEY'] = 'RegisterLogin'
 bcrypt = Bcrypt(app)
 
@@ -303,4 +303,4 @@ def login():
     return render_template('login.html', message=message)
 
 if __name__ == '__main__': #running the localhost5000 for Register and Login
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
