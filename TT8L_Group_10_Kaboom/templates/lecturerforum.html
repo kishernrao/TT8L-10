@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Lecturer Forum</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='lecturer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lecturerforum.css') }}">
 </head>
 <body>
     <nav>
         <div class="nav-items">
             <a href='/lecturer'>Lecturer Page</a>
             <a href="/">Home</a>
-      </nav>
+    </nav>
 
-    <h1>Welcome to Lecturer Forum Page</h1>
+    <h1>Welcome {{ current_user.username }}</h1>
+    <h2>This interactive platform allows you to help out students</h2>
+    <h4>You also can improve your teaching skills by understanding what is needed for your students</h4>
     <h2>Help Students</h2>
 
     {% for question in questions %}

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Student Question Forum</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='student.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='studentforum.css') }}">
 </head>
 <body>
     <nav>
@@ -11,7 +11,9 @@
              <a href='/student'>Student Page</a>
              <a href="/">Home</a>
     </nav>
-    <h1>Welcome to Student Forum Page</h1>
+    <h1>Welcome {{ current_user.username }}</h1>
+    <h2>This intractive platform allows you to ask away questions and get answers from your lecturers</h2>
+    <h4>Have Fun Learning!</h4>
     <h2>Ask a Question</h2>
     
     <form method="POST">

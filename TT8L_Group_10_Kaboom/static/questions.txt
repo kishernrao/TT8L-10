@@ -1,8 +1,8 @@
-What is the SI unit of force?, Newton, Kip, Poundal, Dyne
+What is the SI unit of force?, Newton*, Kip, Poundal, Dyne
 What is gravity?, A form of energy produced by the Earth's core, A measure of an object's mass, A force that attracts objects towards each other*
 what are the categories of mechanical waves?, Audible waves, Infrasonic waves, Ultrasonic waves, Ocean waves*
 SUBJECTIVE: What is the formula for kinetic energy?, KE=1/2mv2
 SUBJECTIVE: How many seconds in a minute?, 60 seconds
-SUBJECTIVE: How many meters in a kilometer?, 1000 metersHi, Bye
+SUBJECTIVE: How many meters in a kilometer?, 1000 meters
 Relative Speed of a with respect to b is given by, A) a+b,  B) a-b*,  C) a/b,  D) ab
 Physics is fun, Nah,  Yes*

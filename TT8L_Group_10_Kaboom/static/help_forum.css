@@ -84,3 +84,16 @@ input[type=text], textarea {
 .helpbtn:hover {
     opacity: 1;
 }
+
+
+/* Link styling */
+a {
+    color: #5bc0de; /* Blue color */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
