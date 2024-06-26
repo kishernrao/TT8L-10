@@ -13,11 +13,11 @@
   <form method="post" action="{{ url_for('register') }}">
     <div class="container">
       <h1 style="text-align: center;">Register</h1>
-      
+
       {% if message %}
         <div class="alert alert-info">{{ message }}</div>
       {% endif %}
-      
+
       <hr>
 
       <label for="email"><b>Email Address</b></label>
@@ -33,7 +33,7 @@
       <input type="password" placeholder="Reconfirm Password" name="psw-reconfirm" id="psw-reconfirm" required>
       <hr>
 
-      <button type="submit" class="registerbtn">Register</button>
+      <button type="submit" class="registerbtn" onmouseover="playSound()">Register</button>
       <!--<p>After registering, you will be redirected to the Login Page</p>-->
 
       <div class="container register page">
@@ -41,5 +41,12 @@
       </div>
     </div>
   </form>
+      <audio id="hover-sound" src="{{ url_for('static', filename='click-sound.mp3') }}"></audio>
+  <script>
+    function playSound() {
+      var audio = document.getElementById('hover-sound');
+      audio.play();
+    }
+  </script>
 </body>
 </html>

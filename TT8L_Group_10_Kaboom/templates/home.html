@@ -6,36 +6,35 @@
     <title>Home</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        .centered-image {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 50vh;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
 </head>
 <body>
     {% if message %}
     <div class="alert alert-info">{{ message }}</div>
     {% endif %}
     <div class="centered-image">
-        <img src="{{ url_for('static', filename='Kab00m.jpg') }}" style="width: 400px;">
-    </div>    
+        <img src="{{ url_for('static', filename='Kab00m.png') }}" style="width: 400px;">
+    </div>
     <br>
     <div class="container">
-        <div class="col-md-offset-15 col-md-13">
-            <div class="form-group">
-                <form action="{{ url_for('login') }}" method="get">
-                    <input type="submit" value="Login" class="btn btn-primary btn-block">
-                </form>
-            </div>
-            <div class="form-group">
-                <form action="{{ url_for('register') }}" method="get">
-                    <input type="submit" value="Register" class="btn btn-info btn-block">
-                </form>
-            </div>
+        <div class="form-group">
+            <form action="{{ url_for('login') }}" method="get">
+                <input type="submit" value="Login" class="btn btn-primary btn-block" onmouseover="playSound()">
+            </form>
+        </div>
+        <div class="form-group">
+            <form action="{{ url_for('register') }}" method="get">
+                <input type="submit" value="Register" class="btn btn-info btn-block" onmouseover="playSound()">
+            </form>
         </div>
     </div>
+
+    <audio id="click-sound" src="{{ url_for('static', filename='click-sound.mp3') }}"></audio>
+    <script>
+        function playSound() {
+            var audio = document.getElementById('click-sound');
+            audio.play();
+        }
+    </script>
 </body>
 </html>
