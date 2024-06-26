@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Summary</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='summary.css') }}">
+</head>
+<body>
+  <nav>
+    <div class="logo">KAB00M!</div>
+    <div class="nav-items">
+      <a href="/">Home</a>
+      <a href='/SUBJECTS'>Subjects</a>
+      <a href='/studentforum'>Student Forum</a>
+
+    </div>
+  </nav>
+  <div class="column-left">
+    <h1>Congrats {{ current_user.username }}!</h1>
+  </div>
+  <div class="summary-container">
+    <h1>Quiz Summary</h1>
+    <div id="summary">
+      <p id="result"></p>
+      <div id="correct-questions">
+        <h2>Correct Questions</h2>
+        <ul id="correct-list"></ul>
+      </div>
+      <div id="wrong-questions">
+        <h2>Wrong Questions</h2>
+        <ul id="wrong-list"></ul>
+      </div>
+    </div>
+    <button id="download-pdf">Download PDF</button>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const score = params.get('score');
+    const total = params.get('total');
+    const percentage = params.get('percentage');
+    const correct = JSON.parse(decodeURIComponent(params.get('correct')));
+    const wrong = JSON.parse(decodeURIComponent(params.get('wrong')));
+
+    const resultContainer = document.getElementById('result');
+    resultContainer.textContent = `Your score is ${score}/${total} (${percentage}%).`;
+
+    const correctList = document.getElementById('correct-list');
+    correct.forEach((question) => {
+      const li = document.createElement('li');
+      li.textContent = question;
+      li.classList.add('correct-answer');
+      correctList.appendChild(li);
+    });
+
+    const wrongList = document.getElementById('wrong-list');
+    wrong.forEach((item) => {
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>${item.question}</strong><br>Selected: ${item.selected}<br>Correct: ${item.correct}`;
+      li.classList.add('wrong-answer');
+      wrongList.appendChild(li);
+    });
+
+    document.getElementById('download-pdf').addEventListener('click', () => {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text('MCQ Quiz Summary', 10, 10);
+      doc.text(resultContainer.textContent, 10, 20);
+
+      let y = 30;
+      doc.text('Correct Questions:', 10, y);
+      correct.forEach((question) => {
+        y += 10;
+        doc.text(`- ${question}`, 10, y);
+      });
+
+      y += 20;
+      doc.text('Wrong Questions:', 10, y);
+      wrong.forEach((item) => {
+        y += 10;
+        doc.text(`- ${item.question}`, 10, y);
+        y += 10;
+        doc.text(`  Selected: ${item.selected}`, 10, y);
+        y += 10;
+        doc.text(`  Correct: ${item.correct}`, 10, y);
+      });
+
+      doc.save('quiz-summary.pdf');
+    });
+  </script>
+</body>
+</html>
