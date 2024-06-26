@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English Quiz</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='quiz.css') }}">
+</head>
+<body>
+  <nav>
+    <div class="logo">KAB00M!</div>
+    <div class="nav-items">
+      <a href="/">Home</a>
+      <a href='/studentforum'>Student Forum</a>
+      <a href='/SUBJECTS'>Subjects</a>
+    </div>
+  </nav>
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div id="flash-message">
+      <span>{{ messages[0] }}</span>
+      <button id="dismiss-btn">Dismiss</button>
+    </div>
+  {% endif %}
+  {% endwith %}
+
+  <div id="page-container">
+    <h1>English Quiz</h1>
+    <div id="quiz-container"></div>
+    <button id="submit-btn">Submit Quiz</button>
+  </div>
+
+  <script>
+    document.getElementById('dismiss-btn').addEventListener('click', function() {
+      var flashMessage = document.getElementById('flash-message');
+      if (flashMessage) {
+        flashMessage.style.display = 'none';
+      }
+    });
+  </script>
+  <script src="{{ url_for('static', filename='English.js') }}"></script> 
+</body>
+</html>
